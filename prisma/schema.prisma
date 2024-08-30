@@ -16,3 +16,27 @@ model Ticket {
   description   String
   public Boolean  @default(false)
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username String
+  password String
+  isActive Boolean
+  companyId Int
+  Company Company @relation(fields: [companyId], references: [id])
+  @@unique([username])
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  doc String
+  name String
+  email String
+  contact String
+  isActive Boolean
+  User User[]
+}

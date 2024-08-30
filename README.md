@@ -1,5 +1,10 @@
 # REST API Example
 
+https://docs.nestjs.com/
+https://www.prisma.io/docs
+https://jestjs.io/pt-BR/docs/getting-started
+https://supabase.com/dashboard
+
 This example shows how to implement a **REST API** using [NestJS](https://docs.nestjs.com/) and [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client). The example uses an SQLite database file with some initial dummy data which you can find at [`./prisma/dev.db`](./prisma/dev.db). The example was bootstrapped using the NestJS CLI command `nest new rest-nestjs`.
 
 ## Getting started
