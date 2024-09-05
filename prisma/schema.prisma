@@ -14,6 +14,11 @@ model Ticket {
   updatedAt DateTime @updatedAt
   title     String
   description   String
+  actions TicketActions[]
+  userCreatorId Int
+  UserCreator User @relation(fields: [userCreatorId], references: [id])
+  companyId Int
+  Company Company @relation(fields: [companyId], references: [id])
   public Boolean  @default(false)
 }
 
@@ -25,6 +30,9 @@ model User {
   password String
   isActive Boolean
   companyId Int
+  tickets Ticket[]
+  ownActions TicketActions[] @relation("actionCreator")
+  actionsClient TicketActions[] @relation("actionClient")
   Company Company @relation(fields: [companyId], references: [id])
   @@unique([username])
 }
@@ -39,4 +47,19 @@ model Company {
   contact String
   isActive Boolean
   User User[]
+  tickets Ticket[]
+}
+
+model TicketActions {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ticketId Int
+  Ticket Ticket @relation(fields: [ticketId], references: [id])
+  description String
+  clientUserId Int
+  ClientUser User @relation("actionClient", fields: [clientUserId], references: [id]) 
+  userCreatorId Int
+  UserCreator User @relation("actionCreator", fields: [userCreatorId], references: [id])
+  isActive Boolean
 }
