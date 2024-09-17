@@ -30,7 +30,7 @@ model User {
   password String
   isActive Boolean
   companyId Int
-  tickets Ticket[]
+  Tickets Ticket[]
   ownActions TicketActions[] @relation("actionCreator")
   actionsClient TicketActions[] @relation("actionClient")
   Company Company @relation(fields: [companyId], references: [id])

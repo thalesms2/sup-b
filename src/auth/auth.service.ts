@@ -29,6 +29,19 @@ export class AuthService {
         }
         return null;
     }
+    async validateToken(token: string): Promise<any> {
+        try {
+            const user = await this.jwtService.verifyAsync(token)
+            var expDate = new Date().setUTCSeconds(user.exp)
+            if(expDate > Date.now()) {
+                return true
+            } else {
+                return false
+            }
+        } catch(error) {
+            return false
+        }
+    }
     async login(user: any) {
         const payload = { username: user.username, sub: user.password };
         return {
