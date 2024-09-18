@@ -5,9 +5,10 @@ import {
     Post,
     Body,
     Put,
-    UseGuards
+    UseGuards,
+    Get
 } from '@nestjs/common'
-import { ICompanyDTO } from './company.interface'
+import { ICompanyDTO, ICompany } from './company.interface'
 import { ControllerGeneric } from '../controller.generic'
 import { CompanyService } from './company.service';
 
@@ -15,6 +16,16 @@ import { CompanyService } from './company.service';
 export class CompanyController extends ControllerGeneric<ICompanyDTO>{
     constructor(prismaService: PrismaService, private companyService: CompanyService) {
         super(prismaService, 'company')
+    }
+
+    @Get('list')
+    async list(): Promise<Array<{id: number, name: string}>> {
+        return await this.prismaService.company.findMany({
+            select: {
+                id: true,
+                name: true,
+            },
+        })
     }
 
     @UseGuards(JwtAuthGuard)

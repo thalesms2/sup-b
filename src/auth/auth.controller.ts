@@ -37,7 +37,7 @@ export class AuthController {
     }
 
     @Post('sign-up')
-    async signUp(@Body() user: IUserDTO): Promise<IUserDTO> {
+    async signUp(@Body() user: IUserDTO): Promise<{ id: number, isActive: boolean }> {
         return this.authService.signUp(user);
     }
 }

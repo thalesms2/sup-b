@@ -8,7 +8,7 @@ import {
     UseGuards
 } from '@nestjs/common'
 import { ControllerGeneric } from 'src/controller.generic'
-import { ITicketDTO } from './ticket.interface'
+import { ITicketDTO, ITicket } from './ticket.interface'
 import { TicketService } from './ticket.service'
 
 @Controller('ticket')
@@ -19,7 +19,7 @@ export class TicketController extends ControllerGeneric<ITicketDTO> {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createNew(@Body() ticket: ITicketDTO): Promise<ITicketDTO> {
+    async createNew(@Body() ticket: ITicketDTO): Promise<ITicket> {
         try {
             const result = await this.ticketService.createNew(ticket);
             if(result)
