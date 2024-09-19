@@ -19,6 +19,8 @@ model Ticket {
   UserCreator User @relation(fields: [userCreatorId], references: [id])
   companyId Int
   Company Company @relation(fields: [companyId], references: [id])
+  status String
+  priority Int
   public Boolean  @default(false)
 }
 
