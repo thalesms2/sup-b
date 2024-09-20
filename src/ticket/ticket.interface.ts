@@ -4,6 +4,8 @@ interface ITicketDTO {
     actions: Array<ITicketActionDTO>
     userCreatorId: number;
     companyId: number;
+    status: string;
+    priority: number;
     public: boolean;
 }
 
@@ -16,6 +18,8 @@ interface ITicket {
     actions: Array<ITicketAction>
     userCreatorId: number;
     companyId: number;
+    status: string;
+    priority: number;
     public: boolean;
 }
 

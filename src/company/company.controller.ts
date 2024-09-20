@@ -9,6 +9,7 @@ import {
     Get
 } from '@nestjs/common'
 import { ICompanyDTO, ICompany } from './company.interface'
+import { IUser } from 'src/users/users.interface'
 import { ControllerGeneric } from '../controller.generic'
 import { CompanyService } from './company.service';
 
@@ -24,6 +25,22 @@ export class CompanyController extends ControllerGeneric<ICompanyDTO>{
             select: {
                 id: true,
                 name: true,
+            },
+        })
+    }
+
+    @Get('list-users')
+    async listUsers(): Promise<Array<{id: number, name: string, User: Array<{ id: number, username: string }>}>> {
+        return await this.prismaService.company.findMany({
+            select: {
+                id: true,
+                name: true,
+                User: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                },
             },
         })
     }

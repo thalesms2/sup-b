@@ -8,6 +8,11 @@ export class TicketService {
     constructor(private readonly prismaService: PrismaService) {}
 
     async createNew(ticket: ITicketDTO): Promise<ITicket> {
+        ticket.actions.map((action) => {
+            action.isActive = true
+            action.userCreatorId = ticket.userCreatorId
+            action.clientUserId = Number(action.clientUserId)
+        })
         const model: ITicket = await this.prismaService.ticket.create({
             data: {
                 title: ticket.title,
@@ -18,6 +23,8 @@ export class TicketService {
                     }
                 },
                 userCreatorId: ticket.userCreatorId,
+                status: ticket.status,
+                priority: ticket.priority,
                 companyId: ticket.companyId,
                 public: ticket.public
             },
