@@ -5,22 +5,21 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { PrismaService } from '../prisma.service'
+import { PrismaService } from '../../services/prisma/prisma.service';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
-    UsersModule, 
+    UsersModule,
     PassportModule,
     ConfigModule.forRoot(),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '100000s'}
+      signOptions: { expiresIn: '100000s' },
     }),
   ],
-  providers: [AuthService, PrismaService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, PrismaService, JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -1,32 +1,37 @@
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { PrismaService } from '../prisma.service'
+import { Param, Controller, UseGuards, Get } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { PrismaService } from '../../services/prisma/prisma.service';
+import { ControllerGeneric } from '../../services/utils/controller.generic';
+import { UsersService } from './users.service';
+import { UserReturnDto } from './interfaces/userReturn.dto';
+import { UserListDto } from './interfaces/userList.dto';
 import {
-  Param,
-  Controller,
-  UseGuards,
-  Get
-} from '@nestjs/common'
-import { ControllerGeneric } from 'src/controller.generic'
-import { UsersService } from './users.service'
-import { IUserDTO } from './users.interface'
+  ApiBasicAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiBasicAuth('apiKey')
+@ApiTags('User')
 @Controller('user')
-export class UsersController extends ControllerGeneric<IUserDTO> {
-    constructor(prismaService: PrismaService, private userService: UsersService) {
-        super(prismaService, 'user')
-    }
+export class UsersController extends ControllerGeneric<UserReturnDto> {
+  constructor(
+    prismaService: PrismaService,
+    private userService: UsersService,
+  ) {
+    super(prismaService, 'user');
+  }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('list/:id')
-    async list(@Param('id') companyId: string): Promise<Array<{id: number, username: string}>> {
-        return await this.prismaService.user.findMany({
-            select: {
-                id: true,
-                username: true,
-            },
-            where: {
-              companyId: Number(companyId)
-            }
-        })
-    }
+  @UseGuards(JwtAuthGuard)
+  @Get('list/:id')
+  @ApiOperation({ summary: 'Retorna uma listagem de usuários' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ok',
+    type: [UserListDto],
+  })
+  async list(@Param('id') companyId: string): Promise<Array<UserListDto>> {
+    return await this.userService.list(+companyId);
+  }
 }
